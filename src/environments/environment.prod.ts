@@ -3,7 +3,7 @@ export const environment = {
   firebase: {
     apiKey: 'AIzaSyCJpemfOFilAcnfkDP86tIOqJFdseDA6bk',
     authDomain: 'atc-planner.firebaseapp.com',
-    databaseURL: 'https://holys-bet-manager-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL: 'https://atc-planner-default-rtdb.europe-west1.firebasedatabase.app/',
     projectId: 'atc-planner',
     storageBucket: 'atc-planner.appspot.com',
     messagingSenderId: '581358845260',
