@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+html,
+body {
+  font-family: var(--font-primary);
+  font-size: var(--font-base);
+  color: var(--color-dark);
+}
+
+h2 {
+  font-size: var(--font-size-header);
+}
+
+.font-primary {
+  font-family: var(--font-primary);
+}
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+.text-small {
+  font-size: var(--font-small);
+}
+.text-base {
+  font-size: var(--font-base);
+}
+.text-large {
+  font-size: var(--font-large);
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+.fc .fc-toolbar-title{
+  font-size: var(--font-base) !important;
+}

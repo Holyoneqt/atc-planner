@@ -1,0 +1,26 @@
+.app-form-field {
+  position: relative;
+  display: block;
+
+  &-label {
+    position: absolute;
+    left: 8px;
+    top: 20px;
+    transition: 0.3s ease;
+    transform-origin: left;
+    pointer-events: none;
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  input.app-input,
+  textarea.app-input {
+    &.is-focus,
+    &.has-value {
+      + .app-form-field-label {
+        color: var(--color-dark);
+        transform: scale(0.8) translateY(-20px);
+      }
+    }
+  }
+}

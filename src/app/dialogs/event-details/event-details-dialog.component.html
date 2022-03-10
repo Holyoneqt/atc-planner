@@ -1,0 +1,10 @@
+<h1 class="text-center">{{data.event.date.day}}. {{getNameOfMonth(data.event.date.month ?? 0)}}</h1>
+<h2 class="mb-4 text-center">{{ data.event.name }}</h2>
+<pre class="note">{{ data.event.note }}</pre>
+
+<div class="buttons">
+	<button appButton appearance="warn">
+		<app-icon name="delete" (click)="close(true)"></app-icon>
+	</button>
+	<button class="w-full" appButton (click)="close()">Schliessen</button>
+</div>

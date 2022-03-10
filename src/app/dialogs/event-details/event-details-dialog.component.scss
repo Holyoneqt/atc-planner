@@ -1,0 +1,12 @@
+:host {
+	pre {
+		font: var(--font-primary);
+		overflow: scroll;
+	}
+
+	.buttons {
+		display: flex;
+		margin-top: 16px;
+		gap: 8px;
+	}
+}

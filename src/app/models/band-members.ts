@@ -1,0 +1,1 @@
+export type BandMember = 'Thierry' | 'Fäbe' | 'Chöbbi' | 'Dave' | 'Luggy';

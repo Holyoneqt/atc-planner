@@ -1,0 +1,85 @@
+<div class="calendar-header">
+  <app-icon name="chevron_left" (click)="changeMonth(-1)"></app-icon>
+  <h2 class="calendar-title">{{ nameOfMonth() }} {{ selectedYear }}</h2>
+  <app-icon name="chevron_right" (click)="changeMonth(1)"></app-icon>
+</div>
+<div class="calendar-options">
+  <button style="height: 40px;" appButton (click)="startEdit()" [disabled]="isEditing">Edit</button>
+  <div class="calendar-filter">
+      <div>
+          <input type="checkbox" id="Thierry" name="Thierry" (input)="handleFilterChange($event)">
+          <label for="Thierry">Thierry</label>
+      </div>
+      <div>
+          <input type="checkbox" id="Chöbbi" name="Chöbbi" (input)="handleFilterChange($event)">
+          <label for="Chöbbi">Chöbbi</label>
+      </div>
+      <div>
+          <input type="checkbox" id="Fäbe" name="Fäbe" (input)="handleFilterChange($event)">
+          <label for="Fäbe">Fäbe</label>
+      </div>
+      <div>
+          <input type="checkbox" id="Luggy" name="Luggy" (input)="handleFilterChange($event)">
+          <label for="Luggy">Luggy</label>
+      </div>
+      <div>
+          <input type="checkbox" id="Dave" name="Dave" (input)="handleFilterChange($event)">
+          <label for="Dave">Dave</label>
+      </div>
+  </div>
+</div>
+
+<div class="calendar-title-days">
+  <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span
+  ><span>Sa</span><span>So</span>
+</div>
+<div class="calendar">
+  <div class="calendar-week" *ngFor="let week of weeks">
+    <div
+      class="calendar-day"
+      *ngFor="let date of week.dates"
+      [class.is-today]="isCurrentDay(date.day)"
+      [class.is-highlighted]="isHighlighted(date)"
+      (click)="handleCalendarDayClick(date)"
+      [appContextMenu]="getContextMenuForDay(date.day)"
+      [contextMenuDisabled]="isEditing || date.day === 0"
+      (contextMenuClick)="handleContextMenuClick(date, $event)"
+    >
+      <div
+        class="calendar-day-empty"
+        *ngIf="date.day === 0; else calendarDayContent"
+      ></div>
+
+      <ng-template #calendarDayContent>
+        <div class="calendar-day-header">
+          <span>{{ date.day }}</span>
+        </div>
+
+        <div class="calendar-events">
+          <div
+            class="calendar-event"
+            [class]="event.name"
+            *ngFor="let event of getEventsOfDay(date.day)"
+          >
+            {{ event.name }}
+          </div>
+        </div>
+        <div class="calendar-people">
+          <div
+            *ngFor="let members of getAttendanceOfDay(date.day)"
+            class="calendar-person"
+            [class]="members"
+          ></div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<button
+  *ngIf="isEditing"
+  (click)="saveEditChanges()"
+  class="calendar-editing-mode-done"
+>
+  <app-icon name="done"></app-icon>
+</button>

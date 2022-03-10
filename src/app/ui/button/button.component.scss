@@ -1,0 +1,16 @@
+:host {
+	display: flex;
+	align-items: center;
+	border: 2px solid var(--color-dark);
+	border-radius: 4px;
+	background: transparent;
+	padding: 4px 16px;
+	align-items: center;
+	justify-content: center;
+
+	&.warn {
+		border: none;
+		background-color: var(--color-warn);
+		color: var(--color-white);
+	}
+}

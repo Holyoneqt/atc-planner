@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'material-icons/iconfont/material-icons.css';
+@import '@angular/cdk/overlay-prebuilt.css';
+
+@import './styles/reset.scss';
+@import './styles/variables.scss';
+@import './styles/typo.scss';
+@import './styles/spacing.scss';
+@import './styles/overlay.scss';
+@import './styles/util.scss';

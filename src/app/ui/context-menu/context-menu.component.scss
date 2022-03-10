@@ -1,0 +1,23 @@
+.app-context-menu {
+  background-color: white;
+  padding: 4px 0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 4px;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 164px;
+    padding: 8px 16px;
+    transition: .3s ease;
+
+    &:hover {
+      background-color: whitesmoke;
+    }
+  }
+
+  &-seperator {
+    border-bottom: 1px solid var(--color-dark);
+  }
+}

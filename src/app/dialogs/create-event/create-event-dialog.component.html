@@ -1,0 +1,13 @@
+<h1 class="mb-4 text-center">{{data.day}}. {{data.month}}</h1>
+<select name="type" id="type" #type>
+	<option value="Prob">Prob</option>
+	<option value="Synth">Synth</option>
+	<option value="Vocals">Vocals</option>
+	<option value="Recording">Recording</option>
+</select>
+
+<app-form-field label="Notiz">
+	<textarea appInput style="height: 200px;" #note></textarea>
+</app-form-field>
+
+<button class="mt-4 w-full" appButton (click)="save(type.value, note.value)">Speichern</button>
