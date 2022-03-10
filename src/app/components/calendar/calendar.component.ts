@@ -17,6 +17,7 @@ import { BandEvent } from 'src/app/models/band-event';
 import { BandMember } from 'src/app/models/band-members';
 import { ContextMenuItem } from 'src/app/models/context-menu.model';
 import { DateData } from 'src/app/models/date.model';
+import { getCleanBandMemberClassName } from 'src/app/utils/band-members.util';
 import { getDaysOfMonth, getNameOfDay, getNameOfMonth } from 'src/app/utils/date.util';
 
 interface CalendarWeek {
@@ -49,6 +50,8 @@ export class CalendarComponent implements OnInit {
   private attendanceRef: DatabaseReference | undefined;
 
   public filter: string[] = [];
+
+  public getCleanBandMemberClassName = getCleanBandMemberClassName;
 
   constructor(private dialog: MatDialog, private db: Database) {}
 

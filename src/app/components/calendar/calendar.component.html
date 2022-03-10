@@ -68,7 +68,7 @@
           <div
             *ngFor="let members of getAttendanceOfDay(date.day)"
             class="calendar-person"
-            [class]="members"
+            [class]="getCleanBandMemberClassName(members)"
           ></div>
         </div>
       </ng-template>
