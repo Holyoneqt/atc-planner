@@ -20,8 +20,12 @@ export class AppComponent implements OnInit {
   ];
     
   public ngOnInit(): void {
-    const localStorageMember = localStorage.getItem('atc-member') as BandMember;
-    this.currentMember = localStorageMember ?? 'Luggy';
+    let localStorageMember = localStorage.getItem('atc-member') as BandMember;
+    if (localStorageMember === undefined) {
+      localStorageMember = 'Luggy';
+      localStorage.setItem('atc-member', localStorageMember);
+    }
+    this.currentMember = localStorageMember;
   }
 
   private handleDateClick(arg: any): void {
