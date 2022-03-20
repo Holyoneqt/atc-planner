@@ -233,14 +233,22 @@ export class CalendarComponent implements OnInit {
     const currentMember: BandMember = localStorage.getItem(
       'atc-member'
     ) as BandMember;
+    if (!currentMember) return;
+
     const attendance = this._attendances.find(
       (a) =>
         a.date.day === date.day &&
         a.date.month === this.selectedMonth &&
         a.date.year === this.selectedYear
     );
-    if (attendance) {
-      attendance.people.push(currentMember);
+    if (attendance && attendance.people) {
+      const attendanceIndex = attendance.people.findIndex(mem => mem === currentMember);
+      console.log(attendanceIndex);
+      if (attendanceIndex === -1) {
+        attendance.people.push(currentMember);
+      } else {
+        attendance.people.splice(attendanceIndex, 1);
+      }
     } else {
       this._attendances.push({
         date,
