@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, HostListener, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostBinding, HostListener, Output, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: '[appInput]',
@@ -16,6 +16,8 @@ export class InputComponent implements AfterViewInit {
   @HostBinding('class.has-value')
   private hasValue: boolean = false;
   public value: string = '';
+
+  @Output() valueChange = new EventEmitter();
 
   @HostListener('focus')
   public onFocus() {
@@ -40,6 +42,7 @@ export class InputComponent implements AfterViewInit {
 
   private checkForValue(element: HTMLInputElement): void {
     this.value = element.value;
+    this.valueChange.emit(this.value);
     this.hasValue = this.value !== '';
   }
 }

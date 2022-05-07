@@ -11,6 +11,9 @@ export interface EventDetailsDialogInputData {
 
 export interface EventDetailsDialogReturnData {
   delete?: boolean;
+  members: string;
+  time: string;
+  note: string;
 }
 
 @Component({
@@ -22,15 +25,25 @@ export class EventDetailsDialogComponent implements OnInit {
 
   public getNameOfMonth = getNameOfMonth;
 
+  public note: string = '';
+  public members: string = '';
+  public time: string = '';
+
   constructor(public dialogRef: MatDialogRef<CreateEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EventDetailsDialogInputData,) { }
 
   public ngOnInit(): void {
+    this.note = this.data.event.note;
+    this.members = this.data.event.members ?? '';
+    this.time = this.data.event.time ?? '';
   }
 
   public close(shouldDelete: boolean = false): void {
     this.dialogRef.close({
       delete: shouldDelete,
+      note: this.note,
+      members: this.members,
+      time: this.time,
     } as EventDetailsDialogReturnData);
   }
 

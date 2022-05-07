@@ -1,6 +1,15 @@
 <h1 class="text-center">{{data.event.date.day}}. {{getNameOfMonth(data.event.date.month ?? 0)}}</h1>
 <h2 class="mb-4 text-center">{{ data.event.name }}</h2>
-<pre class="note">{{ data.event.note }}</pre>
+<div class="content-grid">
+	<app-icon name="schedule"></app-icon>
+	<input appInput type="text" [(value)]="time" />
+	
+	<app-icon name="person"></app-icon>
+	<input appInput type="text" [(value)]="members" />
+	
+	<app-icon name="note"></app-icon>
+	<textarea appInput type="text" [(value)]="note"></textarea>
+</div>
 
 <div class="buttons">
 	<button appButton appearance="warn">

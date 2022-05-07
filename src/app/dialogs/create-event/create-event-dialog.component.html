@@ -6,8 +6,16 @@
 	<option value="Recording">Recording</option>
 </select>
 
+<app-form-field label="Wer">
+	<input appInput #members />
+</app-form-field>
+
+<app-form-field label="Zeit">
+	<input appInput #time />
+</app-form-field>
+
 <app-form-field label="Notiz">
 	<textarea appInput style="height: 200px;" #note></textarea>
 </app-form-field>
 
-<button class="mt-4 w-full" appButton (click)="save(type.value, note.value)">Speichern</button>
+<button class="mt-4 w-full" appButton (click)="save(type.value, members.value, time.value, note.value)">Speichern</button>

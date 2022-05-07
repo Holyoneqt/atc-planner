@@ -8,6 +8,8 @@ export interface CreateEventDialogInputData {
 
 export interface CreateEventDialogReturnData {
   name: string;
+  members: string;
+  time: string;
   note: string;
 }
 
@@ -31,9 +33,9 @@ export class CreateEventDialogComponent implements OnInit {
     
   }
 
-  public save(name: string, note: string): void {
+  public save(name: string, members: string, time: string, note: string): void {
     this.dialogRef.close({
-      name, note
+      name, members, time, note
     } as CreateEventDialogReturnData);
   }
 

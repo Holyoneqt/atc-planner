@@ -131,6 +131,8 @@ export class CalendarComponent implements OnInit {
           this._events.push({
             date,
             name: data.name,
+            members: data.members,
+            time: data.time,
             note: data.note,
           });
           set(this.eventsRef!, this._events);
@@ -151,16 +153,21 @@ export class CalendarComponent implements OnInit {
         })
         .afterClosed()
         .subscribe((data: EventDetailsDialogReturnData) => {
+          const overallEventIndex = this._events.findIndex(
+            (e) =>
+              e.date.day === date.day &&
+              e.date.month === this.selectedMonth &&
+              e.date.year === this.selectedYear &&
+              e.name === eventName,
+          );
+
           if (data.delete) {
-            console.log(eventIndex);
-            const overallEventIndex = this._events.findIndex(
-              (e) =>
-                e.date.day === date.day &&
-                e.date.month === this.selectedMonth &&
-                e.date.year === this.selectedYear &&
-                e.name === eventName,
-            );
             this._events.splice(overallEventIndex, 1);
+            set(this.eventsRef!, this._events);
+          } else {
+            this._events[overallEventIndex].time = data.time;
+            this._events[overallEventIndex].note = data.note;
+            this._events[overallEventIndex].members = data.members;
             set(this.eventsRef!, this._events);
           }
         });
