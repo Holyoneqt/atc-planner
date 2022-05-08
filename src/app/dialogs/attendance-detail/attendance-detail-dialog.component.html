@@ -1,0 +1,7 @@
+<h2 class="text-center">{{data.member}} {{data.date.day}}.{{data.date.month}}.{{data.date.year}}</h2>
+
+<app-form-field label="Zeit" class="mb-4">
+	<input appInput type="text" [(value)]="time" />
+</app-form-field>
+
+<button class="w-full" appButton (click)="close()">Ok</button>

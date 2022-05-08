@@ -4,6 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
+  AttendanceDetailDialogComponent,
+  AttendanceDetailsDialogInputData,
+  AttendanceDetailsDialogReturnData,
+} from 'src/app/dialogs/attendance-detail/attendance-detail-dialog.component';
+import {
   CreateEventDialogComponent,
   CreateEventDialogInputData,
   CreateEventDialogReturnData,
@@ -14,7 +19,7 @@ import {
   EventDetailsDialogReturnData,
 } from 'src/app/dialogs/event-details/event-details-dialog.component';
 import { BandEvent } from 'src/app/models/band-event';
-import { BandMember } from 'src/app/models/band-members';
+import { BandMember, BandMemberArray } from 'src/app/models/band-members';
 import { ContextMenuItem } from 'src/app/models/context-menu.model';
 import { DateData } from 'src/app/models/date.model';
 import { getCleanBandMemberClassName } from 'src/app/utils/band-members.util';
@@ -27,6 +32,9 @@ interface CalendarWeek {
 interface Attendance {
   date: DateData;
   people: BandMember[];
+  details?: {
+    [key: string]: string;
+  };
 }
 
 @Component({
@@ -76,17 +84,20 @@ export class CalendarComponent implements OnInit {
   public getContextMenuForDay(day: number): ContextMenuItem[] {
     const attendance = this.getAttendanceOfDay(day);
     let peopleInContextMenu: ContextMenuItem[] = [];
-    if (attendance.length > 0) {
+    if (attendance !== undefined && attendance?.people?.length > 0) {
       peopleInContextMenu = [
         { type: 'seperator' },
-        ...attendance.map(
-          (a) =>
-            ({
-              type: 'item',
-              display: a,
-              key: a,
-            } as ContextMenuItem)
-        ),
+        ...attendance.people.map((a) => {
+          let displayValue: string = a;
+          if ((attendance.details ?? {})[a]) {
+            displayValue = `${a} (${(attendance.details ?? {})[a]})`
+          }
+          return {
+            type: 'item',
+            display: displayValue,
+            key: a,
+          } as ContextMenuItem;
+        }),
       ];
     }
 
@@ -115,7 +126,7 @@ export class CalendarComponent implements OnInit {
   }
 
   public handleContextMenuClick(date: DateData, event: string): void {
-    console.log(date);
+    console.log(date, event);
     if (event === 'add-event') {
       this.dialog
         .open(CreateEventDialogComponent, {
@@ -158,7 +169,7 @@ export class CalendarComponent implements OnInit {
               e.date.day === date.day &&
               e.date.month === this.selectedMonth &&
               e.date.year === this.selectedYear &&
-              e.name === eventName,
+              e.name === eventName
           );
 
           if (data.delete) {
@@ -169,6 +180,29 @@ export class CalendarComponent implements OnInit {
             this._events[overallEventIndex].note = data.note;
             this._events[overallEventIndex].members = data.members;
             set(this.eventsRef!, this._events);
+          }
+        });
+    }
+
+    if (BandMemberArray.includes(event as BandMember)) {
+      this.dialog
+        .open(AttendanceDetailDialogComponent, {
+          data: {
+            member: event,
+            date: date,
+          } as AttendanceDetailsDialogInputData,
+          width: '100vw',
+          autoFocus: false,
+        })
+        .afterClosed()
+        .subscribe((data: AttendanceDetailsDialogReturnData) => {
+          if (data) {
+            console.log(data);
+            this.updateAttendanceDetailOfDay(
+              date,
+              event as BandMember,
+              data.time
+            );
           }
         });
     }
@@ -185,14 +219,14 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  public getAttendanceOfDay(day: number): BandMember[] {
+  public getAttendanceOfDay(day: number): Attendance | undefined {
     const attendance = this._attendances.find(
       (a) =>
         a.date.day === day &&
         a.date.month === this.selectedMonth &&
         a.date.year === this.selectedYear
     );
-    return attendance?.people ?? [];
+    return attendance;
   }
 
   public getEventsOfDay(day: number): BandEvent[] {
@@ -249,7 +283,9 @@ export class CalendarComponent implements OnInit {
         a.date.year === this.selectedYear
     );
     if (attendance && attendance.people) {
-      const attendanceIndex = attendance.people.findIndex(mem => mem === currentMember);
+      const attendanceIndex = attendance.people.findIndex(
+        (mem) => mem === currentMember
+      );
       console.log(attendanceIndex);
       if (attendanceIndex === -1) {
         attendance.people.push(currentMember);
@@ -262,6 +298,28 @@ export class CalendarComponent implements OnInit {
         people: [currentMember],
       });
     }
+  }
+
+  private updateAttendanceDetailOfDay(
+    date: DateData,
+    member: BandMember,
+    detail: string
+  ): void {
+    const attendanceIndex = this._attendances.findIndex(
+      (a) =>
+        a.date.day === date.day &&
+        a.date.month === date.month &&
+        a.date.year === date.year
+    );
+
+    console.log(attendanceIndex);
+    if (attendanceIndex === -1) return;
+    if (this._attendances[attendanceIndex].details === undefined) {
+      this._attendances[attendanceIndex].details = {};
+    }
+
+    this._attendances[attendanceIndex].details![member] = detail;
+    set(this.attendanceRef!, this._attendances);
   }
 
   private getWeeksOfCurrentMonth(): CalendarWeek[] {
@@ -332,9 +390,11 @@ export class CalendarComponent implements OnInit {
     if (this.filter.length === 0) return false;
 
     const attendance = this.getAttendanceOfDay(date.day);
+    if (attendance === undefined) return false;
+
     let shouldHighlight = true;
     this.filter.forEach((f) => {
-      if (attendance.indexOf(f as BandMember) === -1) {
+      if (attendance.people.indexOf(f as BandMember) === -1) {
         shouldHighlight = false;
       }
     });
