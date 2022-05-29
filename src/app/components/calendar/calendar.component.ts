@@ -391,6 +391,7 @@ export class CalendarComponent implements OnInit {
 
     const attendance = this.getAttendanceOfDay(date.day);
     if (attendance === undefined) return false;
+    if (attendance!.people === undefined) return false;
 
     let shouldHighlight = true;
     this.filter.forEach((f) => {
