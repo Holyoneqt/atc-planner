@@ -282,6 +282,11 @@ export class CalendarComponent implements OnInit {
         a.date.month === this.selectedMonth &&
         a.date.year === this.selectedYear
     );
+    
+    if (attendance && !attendance?.people) {
+      attendance.people = []
+    }
+
     if (attendance && attendance.people) {
       const attendanceIndex = attendance.people.findIndex(
         (mem) => mem === currentMember
