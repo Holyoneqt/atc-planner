@@ -1,7 +1,7 @@
 <div class="calendar-header">
-  <app-icon name="chevron_left" (click)="changeMonth(-1)"></app-icon>
+  <app-icon style="margin-left: 24px" name="chevron_left" (click)="changeMonth(-1)"></app-icon>
   <h2 class="calendar-title">{{ nameOfMonth() }} {{ selectedYear }}</h2>
-  <app-icon name="chevron_right" (click)="changeMonth(1)"></app-icon>
+  <app-icon style="margin-right: 24px" name="chevron_right" (click)="changeMonth(1)"></app-icon>
 </div>
 <div class="calendar-options">
   <button style="height: 40px;" appButton (click)="startEdit()" [disabled]="isEditing">Edit</button>
@@ -40,6 +40,7 @@
       *ngFor="let date of week.dates"
       [class.is-today]="isCurrentDay(date.day)"
       [class.is-highlighted]="isHighlighted(date)"
+      [class.is-empty]="date.day === 0"
       (click)="handleCalendarDayClick(date)"
       [appContextMenu]="getContextMenuForDay(date.day)"
       [contextMenuDisabled]="isEditing || date.day === 0"
